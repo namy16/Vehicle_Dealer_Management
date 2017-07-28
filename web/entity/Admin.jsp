@@ -143,8 +143,7 @@ function f2()
         alert(str);
         console.log(str);
         if(str.trim()==="false") {
-            alert("Model number already exist");
-            document.getElementById("axy").innerHTML = "<span><h3>This Model Number already exist!!</h3></span>";
+            document.getElementById("modelnum").style.display="block";
             document.getElementById("axy").focus();
 
             return false;
@@ -231,8 +230,8 @@ if(session2.getAttribute("username")!=null)
                     <h4>Add Vehicle</h4>
                     <form class="login-form" name="myform" action="/Operations.jsp">
                         <input type="text" placeholder="Enter Vehicle Name" name="vname" required/>
-                        <span id="hello" style="float: left">Hello</span>
-                        <input type="text" placeholder="Enter Model Number" name="mno" id="axy" onblur = "f1(this.value)"/>
+                        <span class="glyphicon glyphicon-remove-circle" id="modelnum" style="float: left;color: #f44336;padding-bottom: 2%;display: none">Vehicle Number Already exist!!</span>
+                        <input type="text" placeholder="Enter Vehicle Number" name="mno" id="axy" onblur = "f1(this.value)"/>
                         <input type="text" placeholder="Enter Brand Name" name="bname" required/>
                         <input type="text" placeholder="Enter Price of Vehicle" name="price" required/>
                         <input type="text" placeholder="Enter Units of Vehicle" name="units" required/>
