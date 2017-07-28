@@ -92,6 +92,7 @@ function sellvehicle() {
     document.getElementById("main2").innerHTML=document.getElementById("sellvehicle").innerHTML;
     a1.style.display="block";
 }
+
 function addsparepartstock() {
     var a1=document.getElementById("addsparepartstock");
     document.getElementById("oviewvehicles").style.display="none";
@@ -113,4 +114,7 @@ function sellsparepart() {
     document.getElementById("sellvehicle").style.display="none";
     document.getElementById("main2").innerHTML=document.getElementById("sellsparepart").innerHTML;
     a1.style.display="block";
+}
+function f6() {
+    var a=document.myform.mno.value;
 }

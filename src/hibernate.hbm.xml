@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="util.VehicleService" table="vehicle_service">
+      <meta attribute="class-description">
+         This class contains the vehicle_service detail.
+      </meta>
+      <id name="service_id" type="int" column="service_id">
+         <generator class="native"/>
+      </id>
+      <property name="model_number" column="model_number" type="string"/>
+      <property name="owner_name" column="owner_name" type="string"/>
+      <property name="reading" column="reading" type="int"/>
+      <property name="service_type" column="service_type" type="string"/>
+   </class>
+</hibernate-mapping>

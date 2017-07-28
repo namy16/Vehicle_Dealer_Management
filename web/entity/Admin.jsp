@@ -12,11 +12,18 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Title</title>
-<link rel="stylesheet" href="../css/style.css" >
+    <link rel="stylesheet" href="../css/style.css" >
     <link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" >
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" language="JavaScript" src="https://code.jquery.com/jquery-1.12.4.js" ></script>
+    <script type="text/javascript" language="JavaScript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js" ></script>
+    <script type="text/javascript" language="JavaScript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js" ></script>
 <script type="text/javascript">
 function displayrow() {
     document.getElementById("view").style.display="block";
@@ -116,6 +123,44 @@ function viewlogs() {
     document.getElementById("main").innerHTML = document.getElementById("viewlogs").innerHTML;
     document.getElementById("viewlogs").style.display="block";
 }
+var xmlhttp;
+function f1(a1)
+{
+
+    console.log(a1);
+xmlhttp=new XMLHttpRequest();
+    xmlhttp.onreadystatechange=f2;
+    xmlhttp.open("GET","http://localhost:8080/Ajax.jsp?id1="+a1,true);
+    xmlhttp.send(null);
+    console.log("iiiiiiii");
+}
+function f2()
+{
+
+    if(xmlhttp.readyState===4 && xmlhttp.status===200)
+    {
+        str=xmlhttp.responseText;
+        alert(str);
+        console.log(str);
+        if(str.trim()==="false") {
+            alert("Model number already exist");
+            document.getElementById("axy").innerHTML = "<span><h3>This Model Number already exist!!</h3></span>";
+            document.getElementById("axy").focus();
+
+            return false;
+        }
+        else {
+            alert("model number does not exist");
+        }
+    }
+}
+
+
+</script>
+    <script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
 </script>
 </head>
 <body>
@@ -154,7 +199,7 @@ if(session2.getAttribute("username")!=null)
 </div>
 <div class = "row w3-center" id="main"  >
     </div>
-</div>
+
 <div class = "row" id="addoperator" >
     <div class="login-page" >
         <div class="form" >
@@ -184,9 +229,10 @@ if(session2.getAttribute("username")!=null)
             <div class="login-page" >
                 <div class="form" >
                     <h4>Add Vehicle</h4>
-                    <form class="login-form" action="/Operations.jsp">
+                    <form class="login-form" name="myform" action="/Operations.jsp">
                         <input type="text" placeholder="Enter Vehicle Name" name="vname" required/>
-                        <input type="text" placeholder="Enter Model Number" name="mno" required/>
+                        <span id="hello" style="float: left">Hello</span>
+                        <input type="text" placeholder="Enter Model Number" name="mno" id="axy" onblur = "f1(this.value)"/>
                         <input type="text" placeholder="Enter Brand Name" name="bname" required/>
                         <input type="text" placeholder="Enter Price of Vehicle" name="price" required/>
                         <input type="text" placeholder="Enter Units of Vehicle" name="units" required/>
@@ -263,7 +309,7 @@ if(session2.getAttribute("username")!=null)
 </div>
 <div class = "row" style="display: none" id="viewspareparts">
     <%
-        ResultSet rs1= obj1.list_spareparts();
+        ResultSet rs1 = obj1.list_spareparts();
     %>
     <div class="container-fluid">
         &nbsp;&nbsp;<table class ="table table-hover table-bordered text-centered" style="margin: auto;width: 90% !important; border: 2px solid black "><h2 class="w3-center">Spareparts</h2>
@@ -313,15 +359,19 @@ if(session2.getAttribute("username")!=null)
                 ResultSet rs3= obj2.viewlogs();
             %>
             <div class="container-fluid">
-                &nbsp;&nbsp;<table class ="table table-hover table-bordered text-centered" style="margin: auto;width: 50% !important; border: 2px solid black "><h2 class="w3-center">Logs</h2>
-                <tr class="success"><th>Id</th><th>Userame</th><th>Access Time:</th><th>Action:</th></tr>
+                &nbsp;&nbsp; <table id="example" class="table table-striped table-bordered" cellspacing="0" style="margin: auto;width: 50% !important; border: 2px solid black "><h2 class="w3-center">Logs</h2>
+                <thead>
+                <tr ><th>Id</th><th>Userame</th><th>Access Time:</th><th>Action:</th></tr>
+                </thead><tbody>
                 <%
                     while(rs3.next()) {
                 %>
-                <tr class="danger"><td><%out.println(rs3.getInt("id"));%></td><td><%out.println(rs3.getString("username"));%>
+
+                <tr ><td><%out.println(rs3.getInt("id"));%></td><td><%out.println(rs3.getString("username"));%>
                     <td><%out.println(rs3.getString("time"));%></td><td><%out.println(rs3.getString("description"));%></td></tr>
                 <%
-                        }
+                        }%>
+                        </tbody><%
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

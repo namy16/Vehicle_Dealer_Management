@@ -1,7 +1,10 @@
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="java.sql.ResultSet" %>
 <jsp:useBean id="obj" class="Dao.AdminDaoImpl"/>
 <jsp:useBean id="obj1" class="Dao.VehicleDaoImpl"/>
 <jsp:useBean id="obj2" class="Dao.SparepartDaoImpl"/>
+<jsp:useBean id="obj3" class="Dao.UserDaoImpl"/>
+
 
 
 <%--
@@ -19,8 +22,8 @@
     <link rel="stylesheet" href=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 </head>
 <body>
-<%
 
+<%
 HttpSession session2 = request.getSession(false);
 
 if(session2.getAttribute("username")!=null){
@@ -262,6 +265,36 @@ String vmodelno=request.getParameter("vmodelno");
 </div>
 <%
         }
+    }
+
+    String model_number=request.getParameter("model_number");
+    String owner_name=request.getParameter("owner_name");
+    String service_id=request.getParameter("service_id");
+    String reading=request.getParameter("reading");
+    String servicetype=request.getParameter("optradio");
+    if(model_number !=null) {
+
+    int result= obj3.vehicle_service(model_number,owner_name,Integer.parseInt(service_id),Integer.parseInt(reading),servicetype);
+    if(result == 1) {
+        request.getSession(true);
+        session.setAttribute("model_number",model_number);
+        session.setAttribute("owner_name",owner_name);
+        session.setAttribute("service_id",service_id);
+        session.setAttribute("servicetype",servicetype);
+%>  <div class="row" id="itemadded">
+    <center><h1><img src="images/right.png" title="right"/>Your Vehicle Service Request has accepted!!</h1></center><br>
+    <center><h3><a href="entity/Users.jsp"><button class="w3-button">Back</button></a></h3></center>
+    <center><h3><a href="/ServletPdf"><button class="w3-button">Generate Invoice Pdf</button></a></h3></center>
+</div>
+<%
+
+}else{
+%>  <div class="row" id="itemadded">
+    <center><h1><img src="images/wrong.png" title="right"/>Something goes wrong!!</h1></center><br>
+    <center><h3><a href="entity/Admin.jsp"><button class="w3-button">Back</button></a></h3></center>
+</div>
+<%
+}
     }
 }else{
 %>

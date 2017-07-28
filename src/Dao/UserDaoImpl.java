@@ -1,6 +1,12 @@
 package Dao;
 
 import database.ConnectionFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import util.VehicleService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +22,9 @@ import java.util.Calendar;
 public class UserDaoImpl {
     Connection connection = ConnectionFactory.getConnection();
     private static String username;
+    static SessionFactory factory;
+
+
 
     public int isValid(String username, String pswd) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement("select privelege from users where username = ? and password = ?");
@@ -42,6 +51,28 @@ public class UserDaoImpl {
         } else {
             return -1;
         }
+    }
+    public int vehicle_service(String model_no,String owner_name,int service_id,int reading,String service_type){
+
+        Configuration configuration = new Configuration();
+        configuration.configure();
+
+        factory = configuration.buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Integer employeeID = null;
+        try{
+            tx = session.beginTransaction();
+            VehicleService v = new VehicleService(model_no,owner_name,service_id,reading,service_type);
+            employeeID = (Integer) session.save(v);
+            tx.commit();
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }
+        return 1;
     }
 }
 

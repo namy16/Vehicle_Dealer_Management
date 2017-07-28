@@ -13,9 +13,17 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>session_tracking.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletPdf</servlet-name>
+        <servlet-class>ServletPdf</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPdf</servlet-name>
+        <url-pattern>/ServletPdf</url-pattern>
     </servlet-mapping>
 
 </web-app>
